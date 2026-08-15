@@ -22,9 +22,9 @@ A aplicação foi criada para uma atividade acadêmica sobre automação e CRM. 
 
 ## Status do projeto
 
-**Etapa 1 — estrutura inicial concluída.**
+**Etapa 2 — captura do lead concluída.**
 
-O repositório contém apenas a página inicial de apresentação e os arquivos-base da aplicação. Formulário, Lead Scoring, CRM e automações ainda não foram implementados e fazem parte de etapas futuras.
+O repositório contém um formulário responsivo para captura dos dados básicos e comerciais de potenciais lojistas. Lead Scoring, CRM, persistência de dados e automações ainda não foram implementados e fazem parte de etapas futuras.
 
 ## Como visualizar
 

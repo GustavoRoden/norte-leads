@@ -18,36 +18,95 @@
           <span class="brand__name">Norte Atelier</span>
         </div>
 
-        <p class="eyebrow">Relacionamentos que apontam o caminho</p>
+        <p class="eyebrow">Novos caminhos começam aqui</p>
         <h1 id="page-title">Norte <span>Leads</span></h1>
-        <p class="subtitle">Mini CRM Inteligente</p>
+        <p class="subtitle">Faça parte da nossa rede</p>
         <p class="description">
-          Uma solução criada para a captura, qualificação e gerenciamento de
-          leads B2B da Norte Atelier, aproximando nossa moda de novos lojistas.
+          Conte um pouco sobre a sua loja. Queremos conhecer o seu momento e
+          aproximar a moda da Norte Atelier do seu negócio.
         </p>
 
         <div class="status" role="status">
           <span class="status__dot" aria-hidden="true"></span>
-          Estrutura inicial em desenvolvimento
+          Cadastro rápido e sem compromisso
         </div>
       </section>
 
-      <aside class="hero__visual" aria-label="Fluxo futuro da aplicação">
-        <div class="flow-card">
-          <span class="flow-card__number">01</span>
-          <p>Lead chegou</p>
+      <section class="lead-card" aria-labelledby="form-title">
+        <div class="lead-card__header">
+          <p class="step">Etapa 02</p>
+          <h2 id="form-title">Cadastro de lojista</h2>
+          <p>Preencha os dados abaixo para começarmos uma conversa.</p>
         </div>
-        <span class="flow-arrow" aria-hidden="true">→</span>
-        <div class="flow-card flow-card--featured">
-          <span class="flow-card__number">02</span>
-          <p>Uma lógica acontece</p>
-        </div>
-        <span class="flow-arrow" aria-hidden="true">→</span>
-        <div class="flow-card">
-          <span class="flow-card__number">03</span>
-          <p>Uma ação é tomada</p>
-        </div>
-      </aside>
+
+        <form id="lead-form">
+          <fieldset>
+            <legend>Dados básicos</legend>
+            <div class="form-grid">
+              <div class="field">
+                <label for="name">Nome</label>
+                <input id="name" name="nome" type="text" autocomplete="name" required />
+              </div>
+              <div class="field">
+                <label for="store-name">Nome da loja</label>
+                <input id="store-name" name="nomeDaLoja" type="text" autocomplete="organization" required />
+              </div>
+              <div class="field">
+                <label for="city">Cidade</label>
+                <input id="city" name="cidade" type="text" autocomplete="address-level2" required />
+              </div>
+              <div class="field">
+                <label for="instagram">Instagram da loja</label>
+                <input id="instagram" name="instagram" type="text" placeholder="@sualoja" autocapitalize="none" required />
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Dados comerciais</legend>
+            <div class="field">
+              <label for="has-store">Possui loja atualmente?</label>
+              <select id="has-store" name="possuiLoja" required>
+                <option value="" selected disabled>Selecione uma opção</option>
+                <option value="Sim">Sim</option>
+                <option value="Não">Não</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="order-volume">Volume médio de compra por pedido</label>
+              <select id="order-volume" name="volumeMedio" required>
+                <option value="" selected disabled>Selecione uma opção</option>
+                <option value="Menos de 20 peças">Menos de 20 peças</option>
+                <option value="20 a 49 peças">20 a 49 peças</option>
+                <option value="50 peças ou mais">50 peças ou mais</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="interest">Principal interesse</label>
+              <select id="interest" name="principalInteresse" required>
+                <option value="" selected disabled>Selecione uma opção</option>
+                <option value="Quero comprar">Quero comprar</option>
+                <option value="Quero receber o catálogo">Quero receber o catálogo</option>
+                <option value="Quero conhecer a marca">Quero conhecer a marca</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="purchase-time">Quando pretende realizar uma compra?</label>
+              <select id="purchase-time" name="previsaoDeCompra" required>
+                <option value="" selected disabled>Selecione uma opção</option>
+                <option value="Nos próximos 30 dias">Nos próximos 30 dias</option>
+                <option value="Nos próximos 3 meses">Nos próximos 3 meses</option>
+                <option value="Ainda não tenho previsão">Ainda não tenho previsão</option>
+              </select>
+            </div>
+          </fieldset>
+
+          <button type="submit">Cadastrar Lead</button>
+          <p id="form-success" class="form-success" role="status" aria-live="polite" hidden>
+            Lead cadastrado com sucesso.
+          </p>
+        </form>
+      </section>
     </main>
 
     <footer>

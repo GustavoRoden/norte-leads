@@ -2,6 +2,7 @@ const leadForm = document.querySelector("#lead-form");
 const successMessage = document.querySelector("#form-success");
 const scoreResult = document.querySelector("#score-result");
 const resultName = document.querySelector("#result-name");
+const resultWhatsApp = document.querySelector("#result-whatsapp");
 const resultScore = document.querySelector("#result-score");
 const resultClassification = document.querySelector("#result-classification");
 const scoreBreakdown = document.querySelector("#score-breakdown");
@@ -62,12 +63,16 @@ leadForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
   const formData = new FormData(leadForm);
-  const lead = Object.fromEntries(formData.entries());
+  const lead = {
+    ...Object.fromEntries(formData.entries()),
+    whatsapp: formData.get("whatsapp"),
+  };
   const result = LeadScoring.calculateLeadScore(lead);
 
   leadForm.reset();
   console.log("Lead capturado:", lead);
   resultName.textContent = lead.nome;
+  resultWhatsApp.textContent = lead.whatsapp;
   resultScore.textContent = `${result.score}/100`;
   resultClassification.textContent = result.classification;
   resultPriority.textContent = result.commercialAction.priority;

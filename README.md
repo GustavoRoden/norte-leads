@@ -62,6 +62,8 @@ Em uma aplicação real, a persistência seria feita por um backend integrado a 
 
 ## Execução
 
+O Norte Leads também possui uma [versão web publicada através do GitHub Pages](https://gustavoroden.github.io/norte-leads/).
+
 Não é necessário instalar dependências nem executar um processo de build:
 
 1. baixe ou clone este repositório;

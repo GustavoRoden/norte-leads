@@ -10,6 +10,53 @@ const resultPriority = document.querySelector("#result-priority");
 const resultNextAction = document.querySelector("#result-next-action");
 const resultGuidance = document.querySelector("#result-guidance");
 const resultReason = document.querySelector("#result-reason");
+const resultWhatsAppMessage = document.querySelector("#result-whatsapp-message");
+const copyMessageButton = document.querySelector("#copy-message");
+const copyFeedback = document.querySelector("#copy-feedback");
+
+function legacyCopyText(text) {
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  textArea.setAttribute("readonly", "");
+  textArea.style.position = "fixed";
+  textArea.style.opacity = "0";
+  document.body.append(textArea);
+  textArea.select();
+
+  let copied;
+
+  try {
+    copied = document.execCommand("copy");
+  } finally {
+    textArea.remove();
+  }
+
+  if (!copied) throw new Error("Não foi possível copiar a mensagem.");
+}
+
+async function copyText(text) {
+  if (navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return;
+    } catch {
+      // Permissões do navegador podem bloquear a API moderna; tente o fallback.
+    }
+  }
+
+  legacyCopyText(text);
+}
+
+copyMessageButton.addEventListener("click", async () => {
+  copyFeedback.textContent = "";
+
+  try {
+    await copyText(resultWhatsAppMessage.textContent);
+    copyFeedback.textContent = "Mensagem copiada!";
+  } catch {
+    copyFeedback.textContent = "Não foi possível copiar. Selecione a mensagem manualmente.";
+  }
+});
 
 leadForm.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -27,6 +74,11 @@ leadForm.addEventListener("submit", (event) => {
   resultNextAction.textContent = result.commercialAction.nextAction;
   resultGuidance.textContent = result.commercialAction.guidance;
   resultReason.textContent = result.commercialAction.reason;
+  resultWhatsAppMessage.textContent = WhatsAppMessaging.generateWhatsAppMessage(
+    lead,
+    result.classification,
+  );
+  copyFeedback.textContent = "";
   scoreBreakdown.replaceChildren(
     ...result.breakdown.map(({ label, points }) => {
       const item = document.createElement("li");

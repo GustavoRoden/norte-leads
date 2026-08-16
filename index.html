@@ -34,7 +34,7 @@
 
       <section class="lead-card" aria-labelledby="form-title">
         <div class="lead-card__header">
-          <p class="step">Etapa 04</p>
+          <p class="step">Etapa 05</p>
           <h2 id="form-title">Cadastro de lojista</h2>
           <p>Preencha os dados abaixo para começarmos uma conversa.</p>
         </div>
@@ -143,6 +143,15 @@
               </div>
             </dl>
           </div>
+          <div class="whatsapp-message" aria-labelledby="whatsapp-message-title">
+            <p class="step">Abordagem sugerida</p>
+            <h4 id="whatsapp-message-title">Mensagem para WhatsApp</h4>
+            <p id="result-whatsapp-message" class="whatsapp-message__text"></p>
+            <button id="copy-message" class="whatsapp-message__copy" type="button">
+              Copiar mensagem
+            </button>
+            <p id="copy-feedback" class="copy-feedback" role="status" aria-live="polite"></p>
+          </div>
         </section>
       </section>
     </main>
@@ -152,6 +161,7 @@
     </footer>
 
     <script src="scoring.js"></script>
+    <script src="messaging.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

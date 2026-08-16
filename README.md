@@ -28,6 +28,7 @@ A aplicação foi criada para uma atividade acadêmica sobre automação e CRM. 
 - **Etapa 2 — Captura do lead:** formulário responsivo para coleta dos dados básicos e comerciais de potenciais lojistas.
 - **Etapa 3 — Lead Scoring e Classificação Automática:** concluída.
 - **Etapa 4 — Próxima Ação Comercial Automática:** concluída.
+- **Etapa 5 — Geração Automática de Mensagem para WhatsApp:** concluída.
 
 Na Etapa 3, o sistema passou a utilizar as respostas comerciais do formulário para calcular automaticamente uma pontuação em uma escala de 0 a 100. Com base no resultado, cada lead é classificado como **Frio**, **Morno** ou **Quente**, e a composição dos pontos é apresentada após o cadastro.
 
@@ -37,7 +38,16 @@ Na Etapa 4, o sistema passou a transformar automaticamente a classificação do 
 - **Morno:** catálogo + follow-up.
 - **Frio:** nutrição e relacionamento.
 
-A geração de mensagens para WhatsApp, o CRM e a persistência dos leads ainda serão implementados em etapas posteriores.
+Na Etapa 5, o sistema passou a gerar automaticamente uma abordagem comercial personalizada após a classificação do lead. A mensagem utiliza:
+
+- nome do lead;
+- nome da loja;
+- classificação;
+- principal interesse.
+
+A abordagem gerada pode ser copiada para utilização pelo responsável comercial. O sistema não realiza o envio automático da mensagem e não possui integração com a API do WhatsApp.
+
+O CRM e a persistência dos leads ainda serão implementados em etapas posteriores.
 
 ## Como visualizar
 

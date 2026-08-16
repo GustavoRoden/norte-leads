@@ -23,6 +23,7 @@ assert.doesNotMatch(html, /Lead Score|Total de Leads|Leads Quentes|Leads Mornos|
 assert.match(html, /<h2 id="crm-title">Mini CRM<\/h2>/);
 assert.match(html, /<strong id="total-leads">0<\/strong>/);
 assert.match(html, /<option value="score-desc">Maior pontuação primeiro<\/option>/);
+assert.match(html, /<footer>\s*<p>Projeto acadêmico desenvolvido para demonstrar automação e CRM\.<\/p>\s*<\/footer>/);
 assert.match(css, /\.crm-dashboard\s*\{[^}]*grid-template-columns:\s*repeat\(4, minmax\(0, 1fr\)\)/s);
 assert.match(css, /@media \(max-width: 620px\)[\s\S]*?\.crm-dashboard\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\)/);
 assert.match(css, /\.mini-crm\s*\{[^}]*overflow-x:\s*clip/s);
@@ -218,7 +219,9 @@ const hotLead = {
   const firstCard = reload.elements["#crm-list"].children[0];
   const details = firstCard.children[1];
   assert.equal(details.children[0].textContent, "Ver detalhes");
-  assert.equal(details.children[1].children.length, 11);
+  assert.equal(details.children[1].children.length, 10);
+  assert.equal(details.children[1].children.some(({ textContent }) => textContent === "Identificador"), false);
+  assert.equal(details.children[1].children.some(({ textContent }) => textContent === multipleLeads[0].id), false);
   assert.equal(details.children[2].textContent, "Abrir no WhatsApp");
   assert.equal(
     details.children[2].href,

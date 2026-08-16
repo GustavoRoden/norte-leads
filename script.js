@@ -121,7 +121,6 @@ function renderLeads() {
     detailsButton.textContent = "Ver detalhes";
     const detailList = document.createElement("dl");
     [
-      ["Identificador", lead.id],
       ["Data de cadastro", new Date(lead.cadastradoEm).toLocaleString("pt-BR")],
       ["Cidade", lead.cidade],
       ["Instagram", lead.instagram],

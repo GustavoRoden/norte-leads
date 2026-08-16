@@ -54,9 +54,155 @@ body::before {
 
 .hero__content,
 .lead-card,
+.mini-crm,
 footer {
   position: relative;
   z-index: 1;
+}
+
+.mini-crm {
+  min-width: 0;
+  width: min(1120px, calc(100% - 48px));
+  margin: 16px auto 56px;
+  padding: 38px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: rgba(255, 253, 250, 0.82);
+  box-shadow: var(--shadow);
+}
+
+.mini-crm__header h2 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 36px;
+  font-weight: 400;
+}
+
+.mini-crm__header > p:last-child,
+.mini-crm__empty {
+  color: var(--ink-soft);
+}
+
+.mini-crm__empty {
+  margin: 28px 0 0;
+  padding: 22px;
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.crm-list {
+  min-width: 0;
+  display: grid;
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.crm-lead {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--white);
+  box-shadow: 0 8px 24px rgba(25, 58, 53, 0.05);
+}
+
+.crm-lead__summary {
+  display: grid;
+  grid-template-columns:
+    minmax(100px, 1.1fr)
+    minmax(100px, 1.1fr)
+    minmax(110px, 1fr)
+    minmax(62px, 0.55fr)
+    minmax(82px, 0.8fr)
+    minmax(100px, 1fr)
+    minmax(120px, 1.25fr);
+  gap: 0;
+}
+
+.crm-lead__summary div {
+  min-width: 0;
+  padding: 4px 14px;
+  border-left: 1px solid var(--border);
+}
+
+.crm-lead__summary div:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.crm-lead__summary div:last-child {
+  padding-right: 0;
+}
+
+.crm-lead__summary span {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--ink-soft);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.crm-lead__summary strong {
+  display: block;
+  font-size: 13px;
+  line-height: 1.4;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.crm-lead__details {
+  margin-top: 18px;
+  border-top: 1px solid var(--border);
+}
+.crm-lead__details summary {
+  width: fit-content;
+  margin-top: 14px;
+  color: var(--terracotta);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.crm-lead__details dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 15px 28px;
+  margin: 20px 0 4px;
+}
+
+.crm-lead__details dl > div {
+  min-width: 0;
+}
+
+.crm-lead__details dl > div:last-child {
+  grid-column: 1 / -1;
+}
+
+.crm-lead__details dt {
+  color: var(--ink-soft);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.crm-lead__details dd {
+  min-width: 0;
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+}
+.crm-lead__delete {
+  min-height: 38px;
+  margin-top: 18px;
+  padding: 0 16px;
+  border: 1px solid rgba(183, 104, 79, 0.5);
+  color: var(--terracotta);
+  background: transparent;
+  font-size: 12px;
 }
 
 .brand {
@@ -495,6 +641,25 @@ footer p {
   margin: 0;
 }
 
+@media (max-width: 1000px) {
+  .crm-lead__summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 24px;
+  }
+
+  .crm-lead__summary div,
+  .crm-lead__summary div:first-child,
+  .crm-lead__summary div:last-child {
+    padding: 0 0 12px;
+    border: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .crm-lead__details dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 850px) {
   .hero {
     grid-template-columns: 1fr;
@@ -513,8 +678,54 @@ footer p {
 
 @media (max-width: 520px) {
   .hero,
+  .mini-crm,
   footer {
     width: min(100% - 32px, 1120px);
+  }
+
+  .mini-crm {
+    padding: 28px 16px;
+    overflow: hidden;
+  }
+
+  .mini-crm__header h2 {
+    font-size: 32px;
+  }
+
+  .crm-list {
+    gap: 14px;
+  }
+
+  .crm-lead {
+    padding: 18px 16px;
+  }
+
+  .crm-lead__summary,
+  .crm-lead__details dl {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .crm-lead__summary {
+    gap: 12px;
+  }
+
+  .crm-lead__summary div,
+  .crm-lead__summary div:first-child,
+  .crm-lead__summary div:last-child {
+    padding-bottom: 10px;
+  }
+
+  .crm-lead__details dl > div:last-child {
+    grid-column: auto;
+  }
+
+  .crm-lead__details summary {
+    max-width: 100%;
+  }
+
+  .crm-lead__delete {
+    width: 100%;
+    white-space: normal;
   }
 
   .hero {

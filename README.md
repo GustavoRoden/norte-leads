@@ -29,6 +29,7 @@ A aplicação foi criada para uma atividade acadêmica sobre automação e CRM. 
 - **Etapa 3 — Lead Scoring e Classificação Automática:** concluída.
 - **Etapa 4 — Próxima Ação Comercial Automática:** concluída.
 - **Etapa 5 — Geração Automática de Mensagem para WhatsApp:** concluída.
+- **Etapa 6 — Mini CRM e Persistência dos Leads:** concluída.
 
 O formulário de captura também coleta o WhatsApp do potencial lojista como canal de contato comercial.
 
@@ -49,7 +50,19 @@ Na Etapa 5, o sistema passou a gerar automaticamente uma abordagem comercial per
 
 A abordagem gerada pode ser copiada para utilização pelo responsável comercial. O sistema não realiza o envio automático da mensagem e não possui integração com a API do WhatsApp.
 
-O CRM e a persistência dos leads ainda serão implementados em etapas posteriores.
+### Etapa 6 — Mini CRM e Persistência dos Leads
+
+Na Etapa 6, todo lead processado passou a ser armazenado automaticamente em uma coleção no `localStorage`, com ID e data de cadastro. A coleção permite manter vários leads na base sem substituir os registros anteriores, e os dados continuam disponíveis após o recarregamento da página.
+
+A interface agora conta com uma área **Mini CRM**, na qual é possível:
+
+- visualizar o resumo dos leads cadastrados;
+- consultar todos os dados de um lead em **Ver detalhes**;
+- excluir individualmente um lead após confirmação.
+
+O `localStorage` foi escolhido por se tratar de uma demonstração acadêmica executada diretamente no navegador. Essa solução facilita a apresentação do conceito de persistência sem infraestrutura externa, mas não substitui um banco de dados em uma aplicação de produção.
+
+Dashboard, filtros e ordenação ainda serão implementados em etapas posteriores.
 
 ## Como visualizar
 

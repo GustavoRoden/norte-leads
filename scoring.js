@@ -28,6 +28,31 @@
     previsaoDeCompra: "Prazo de compra",
   };
 
+  const commercialActions = {
+    Quente: {
+      priority: "Alta",
+      nextAction: "Contato comercial prioritário",
+      guidance:
+        "Entrar em contato o quanto antes para iniciar uma conversa comercial.",
+      reason: "Lead apresenta forte intenção e potencial de compra.",
+    },
+    Morno: {
+      priority: "Média",
+      nextAction: "Enviar catálogo + realizar follow-up",
+      guidance:
+        "Apresentar a coleção e realizar um novo contato posteriormente.",
+      reason:
+        "Lead apresenta potencial, mas ainda não demonstra urgência suficiente para abordagem comercial prioritária.",
+    },
+    Frio: {
+      priority: "Baixa",
+      nextAction: "Nutrição e relacionamento",
+      guidance:
+        "Manter o lead na base para futuras oportunidades de relacionamento.",
+      reason: "Lead ainda apresenta baixa intenção comercial imediata.",
+    },
+  };
+
   function getClassification(score) {
     if (score >= 70) return "Quente";
     if (score >= 40) return "Morno";
@@ -46,14 +71,22 @@
     });
     const score = breakdown.reduce((total, item) => total + item.points, 0);
 
+    const classification = getClassification(score);
+
     return {
       score,
-      classification: getClassification(score),
+      classification,
       breakdown,
+      commercialAction: commercialActions[classification],
     };
   }
 
-  const leadScoring = { calculateLeadScore, getClassification, scoreRules };
+  const leadScoring = {
+    calculateLeadScore,
+    getClassification,
+    scoreRules,
+    commercialActions,
+  };
   globalScope.LeadScoring = leadScoring;
 
   if (typeof module !== "undefined" && module.exports) {

@@ -16,6 +16,12 @@ const copyMessageButton = document.querySelector("#copy-message");
 const copyFeedback = document.querySelector("#copy-feedback");
 const crmList = document.querySelector("#crm-list");
 const crmEmpty = document.querySelector("#crm-empty");
+const crmFilter = document.querySelector("#crm-filter");
+const crmSort = document.querySelector("#crm-sort");
+const totalLeads = document.querySelector("#total-leads");
+const hotLeads = document.querySelector("#hot-leads");
+const warmLeads = document.querySelector("#warm-leads");
+const coldLeads = document.querySelector("#cold-leads");
 const STORAGE_KEY = "norteLeads";
 
 function loadLeads() {
@@ -56,9 +62,34 @@ function appendDetail(list, label, value) {
 
 function renderLeads() {
   const leads = loadLeads();
-  crmEmpty.hidden = leads.length > 0;
+  const counts = leads.reduce(
+    (totals, lead) => {
+      if (Object.hasOwn(totals, lead.classificacao)) totals[lead.classificacao] += 1;
+      return totals;
+    },
+    { Quente: 0, Morno: 0, Frio: 0 },
+  );
+  totalLeads.textContent = String(leads.length);
+  hotLeads.textContent = String(counts.Quente);
+  warmLeads.textContent = String(counts.Morno);
+  coldLeads.textContent = String(counts.Frio);
 
-  const cards = leads.map((lead) => {
+  const visibleLeads = leads
+    .filter((lead) => crmFilter.value === "Todos" || lead.classificacao === crmFilter.value)
+    .sort((first, second) => {
+      if (crmSort.value === "score-asc") return first.score - second.score;
+      if (crmSort.value === "recent") {
+        return new Date(second.cadastradoEm).getTime() - new Date(first.cadastradoEm).getTime();
+      }
+      return second.score - first.score;
+    });
+
+  crmEmpty.hidden = visibleLeads.length > 0;
+  crmEmpty.textContent = leads.length === 0
+    ? "Nenhum lead cadastrado ainda."
+    : "Nenhum lead encontrado para o filtro selecionado.";
+
+  const cards = visibleLeads.map((lead) => {
     const article = document.createElement("article");
     article.className = "crm-lead";
 
@@ -118,6 +149,9 @@ function renderLeads() {
 
   crmList.replaceChildren(...cards);
 }
+
+crmFilter.addEventListener("change", renderLeads);
+crmSort.addEventListener("change", renderLeads);
 
 function legacyCopyText(text) {
   const textArea = document.createElement("textarea");

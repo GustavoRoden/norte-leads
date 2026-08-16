@@ -5,6 +5,7 @@ const LeadScoring = require("./scoring.js");
 const WhatsAppMessaging = require("./messaging.js");
 
 const html = fs.readFileSync("./index.html", "utf8");
+const css = fs.readFileSync("./style.css", "utf8");
 const instagramPosition = html.indexOf('id="instagram"');
 const whatsappPosition = html.indexOf('id="whatsapp"');
 
@@ -15,6 +16,11 @@ assert.match(
 );
 assert.match(html, /WhatsApp: <strong id="result-whatsapp"><\/strong>/);
 assert.match(html, /<h2 id="crm-title">Mini CRM<\/h2>/);
+assert.match(html, /<strong id="total-leads">0<\/strong>/);
+assert.match(html, /<option value="score-desc">Maior Score primeiro<\/option>/);
+assert.match(css, /\.crm-dashboard\s*\{[^}]*grid-template-columns:\s*repeat\(4, minmax\(0, 1fr\)\)/s);
+assert.match(css, /@media \(max-width: 620px\)[\s\S]*?\.crm-dashboard\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\)/);
+assert.match(css, /\.mini-crm\s*\{[^}]*overflow-x:\s*clip/s);
 
 function createElement() {
   return {
@@ -24,6 +30,7 @@ function createElement() {
     style: {},
     className: "",
     type: "",
+    value: "",
     listeners: {},
     append(...children) {
       this.children.push(...children);
@@ -73,8 +80,16 @@ function loadApplication({ clipboard, execCommand = () => true, localStorage = c
     "#copy-feedback",
     "#crm-list",
     "#crm-empty",
+    "#crm-filter",
+    "#crm-sort",
+    "#total-leads",
+    "#hot-leads",
+    "#warm-leads",
+    "#cold-leads",
   ];
   const elements = Object.fromEntries(selectors.map((selector) => [selector, createElement()]));
+  elements["#crm-filter"].value = "Todos";
+  elements["#crm-sort"].value = "score-desc";
   const temporaryElements = [];
   const document = {
     body: {
@@ -160,6 +175,8 @@ const hotLead = {
   assert.ok(Number.isFinite(Date.parse(storedLead.cadastradoEm)));
   assert.equal(elements["#crm-list"].children.length, 1);
   assert.equal(elements["#crm-empty"].hidden, true);
+  assert.equal(elements["#total-leads"].textContent, "1");
+  assert.equal(elements["#hot-leads"].textContent, "1");
   assert.deepEqual(context.consoleErrors, []);
 }
 
@@ -187,6 +204,8 @@ const hotLead = {
   firstCard.children[2].listeners.click();
   assert.equal(JSON.parse(localStorage.getItem("norteLeads")).length, 1);
   assert.equal(reload.elements["#crm-list"].children.length, 1);
+  assert.equal(reload.elements["#total-leads"].textContent, "1");
+  assert.equal(reload.elements["#hot-leads"].textContent, "1");
 
   const cancelled = loadApplication({ localStorage, confirm: () => false });
   cancelled.elements["#crm-list"].children[0].children[2].listeners.click();
@@ -198,6 +217,74 @@ const hotLead = {
   assert.equal(JSON.parse(localStorage.getItem("norteLeads")).length, 0);
   assert.equal(reopened.elements["#crm-list"].children.length, 0);
   assert.equal(reopened.elements["#crm-empty"].hidden, false);
+  assert.equal(reopened.elements["#total-leads"].textContent, "0");
+}
+
+{
+  const storedLeads = [
+    { ...hotLead, id: "warm", nome: "Morna", score: 55, classificacao: "Morno", cadastradoEm: "2026-01-02T10:00:00.000Z" },
+    { ...hotLead, id: "cold", nome: "Fria", score: 20, classificacao: "Frio", cadastradoEm: "2026-01-03T10:00:00.000Z" },
+    { ...hotLead, id: "hot", nome: "Quente", score: 90, classificacao: "Quente", cadastradoEm: "2026-01-01T10:00:00.000Z" },
+    { ...hotLead, id: "hot-recent", nome: "Quente recente", score: 75, classificacao: "Quente", cadastradoEm: "2026-01-04T10:00:00.000Z" },
+  ].map((lead) => ({
+    ...lead,
+    prioridade: "Prioridade",
+    proximaAcao: "Ação",
+    orientacao: "Orientação",
+    motivo: "Motivo",
+    mensagemWhatsApp: "Mensagem",
+  }));
+  const app = loadApplication({
+    localStorage: createLocalStorage({ norteLeads: JSON.stringify(storedLeads) }),
+  });
+  const cardName = (card) => card.children[0].children[0].children[1].textContent;
+
+  const storedSnapshot = app.localStorage.getItem("norteLeads");
+  assert.equal(app.elements["#crm-filter"].value, "Todos");
+  assert.equal(app.elements["#crm-sort"].value, "score-desc");
+  assert.deepEqual(app.elements["#crm-list"].children.map(cardName), ["Quente", "Quente recente", "Morna", "Fria"]);
+  assert.equal(app.elements["#total-leads"].textContent, "4");
+  assert.equal(app.elements["#hot-leads"].textContent, "2");
+  assert.equal(app.elements["#warm-leads"].textContent, "1");
+  assert.equal(app.elements["#cold-leads"].textContent, "1");
+
+  app.elements["#crm-filter"].value = "Quente";
+  app.elements["#crm-filter"].listeners.change();
+  assert.deepEqual(app.elements["#crm-list"].children.map(cardName), ["Quente", "Quente recente"]);
+
+  app.elements["#crm-filter"].value = "Morno";
+  app.elements["#crm-filter"].listeners.change();
+  assert.deepEqual(app.elements["#crm-list"].children.map(cardName), ["Morna"]);
+
+  app.elements["#crm-filter"].value = "Frio";
+  app.elements["#crm-filter"].listeners.change();
+  assert.deepEqual(app.elements["#crm-list"].children.map(cardName), ["Fria"]);
+
+  app.elements["#crm-filter"].value = "Todos";
+  app.elements["#crm-filter"].listeners.change();
+  assert.deepEqual(app.elements["#crm-list"].children.map(cardName), ["Quente", "Quente recente", "Morna", "Fria"]);
+  assert.equal(app.localStorage.getItem("norteLeads"), storedSnapshot);
+
+  app.elements["#crm-sort"].value = "score-asc";
+  app.elements["#crm-sort"].listeners.change();
+  assert.deepEqual(app.elements["#crm-list"].children.map(cardName), ["Fria", "Morna", "Quente recente", "Quente"]);
+
+  app.elements["#crm-sort"].value = "recent";
+  app.elements["#crm-sort"].listeners.change();
+  assert.deepEqual(app.elements["#crm-list"].children.map(cardName), ["Quente recente", "Fria", "Morna", "Quente"]);
+
+  app.elements["#crm-filter"].value = "Quente";
+  app.elements["#crm-sort"].value = "score-asc";
+  app.elements["#crm-filter"].listeners.change();
+  assert.deepEqual(app.elements["#crm-list"].children.map(cardName), ["Quente recente", "Quente"]);
+  assert.equal(app.localStorage.getItem("norteLeads"), storedSnapshot);
+
+  const reload = loadApplication({ localStorage: app.localStorage });
+  assert.equal(reload.elements["#total-leads"].textContent, "4");
+  assert.equal(reload.elements["#hot-leads"].textContent, "2");
+  assert.equal(reload.elements["#warm-leads"].textContent, "1");
+  assert.equal(reload.elements["#cold-leads"].textContent, "1");
+  assert.deepEqual(reload.context.consoleErrors, []);
 }
 
 (async () => {

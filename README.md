@@ -30,6 +30,7 @@ A aplicação foi criada para uma atividade acadêmica sobre automação e CRM. 
 - **Etapa 4 — Próxima Ação Comercial Automática:** concluída.
 - **Etapa 5 — Geração Automática de Mensagem para WhatsApp:** concluída.
 - **Etapa 6 — Mini CRM e Persistência dos Leads:** concluída.
+- **Etapa 7 — Dashboard, Filtros e Priorização Comercial:** concluída.
 
 O formulário de captura também coleta o WhatsApp do potencial lojista como canal de contato comercial.
 
@@ -62,7 +63,20 @@ A interface agora conta com uma área **Mini CRM**, na qual é possível:
 
 O `localStorage` foi escolhido por se tratar de uma demonstração acadêmica executada diretamente no navegador. Essa solução facilita a apresentação do conceito de persistência sem infraestrutura externa, mas não substitui um banco de dados em uma aplicação de produção.
 
-Dashboard, filtros e ordenação ainda serão implementados em etapas posteriores.
+### Etapa 7 — Dashboard, Filtros e Priorização Comercial
+
+O Mini CRM agora conta com um dashboard comercial que apresenta:
+
+- contador total de leads;
+- quantidade de **Leads Quentes**;
+- quantidade de **Leads Mornos**;
+- quantidade de **Leads Frios**;
+- filtros por classificação;
+- ordenação por Score, do maior para o menor ou do menor para o maior;
+- ordenação por data de cadastro, com os leads mais recentes primeiro;
+- priorização automática dos maiores Scores como visualização padrão.
+
+Os indicadores são calculados dinamicamente a partir dos leads armazenados no `localStorage`. Os filtros e as opções de ordenação modificam somente a visualização da lista e não alteram nem removem os registros persistidos.
 
 ## Como visualizar
 

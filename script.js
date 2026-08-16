@@ -14,6 +14,110 @@ const resultReason = document.querySelector("#result-reason");
 const resultWhatsAppMessage = document.querySelector("#result-whatsapp-message");
 const copyMessageButton = document.querySelector("#copy-message");
 const copyFeedback = document.querySelector("#copy-feedback");
+const crmList = document.querySelector("#crm-list");
+const crmEmpty = document.querySelector("#crm-empty");
+const STORAGE_KEY = "norteLeads";
+
+function loadLeads() {
+  try {
+    const storedLeads = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    return Array.isArray(storedLeads) ? storedLeads : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveLeads(leads) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(leads));
+}
+
+function createLeadId(leads) {
+  const existingIds = new Set(leads.map(({ id }) => id));
+  let id;
+
+  do {
+    id = globalThis.crypto?.randomUUID
+      ? globalThis.crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  } while (existingIds.has(id));
+
+  return id;
+}
+
+function appendDetail(list, label, value) {
+  const group = document.createElement("div");
+  const term = document.createElement("dt");
+  const description = document.createElement("dd");
+  term.textContent = label;
+  description.textContent = value;
+  group.append(term, description);
+  list.append(group);
+}
+
+function renderLeads() {
+  const leads = loadLeads();
+  crmEmpty.hidden = leads.length > 0;
+
+  const cards = leads.map((lead) => {
+    const article = document.createElement("article");
+    article.className = "crm-lead";
+
+    const summary = document.createElement("div");
+    summary.className = "crm-lead__summary";
+    [
+      ["Nome", lead.nome],
+      ["Loja", lead.nomeDaLoja],
+      ["WhatsApp", lead.whatsapp],
+      ["Score", `${lead.score}/100`],
+      ["Classificação", lead.classificacao],
+      ["Prioridade", lead.prioridade],
+      ["Próxima ação", lead.proximaAcao],
+    ].forEach(([label, value]) => {
+      const field = document.createElement("div");
+      const fieldLabel = document.createElement("span");
+      const fieldValue = document.createElement("strong");
+      fieldLabel.textContent = label;
+      fieldValue.textContent = value;
+      field.append(fieldLabel, fieldValue);
+      summary.append(field);
+    });
+
+    const details = document.createElement("details");
+    details.className = "crm-lead__details";
+    const detailsButton = document.createElement("summary");
+    detailsButton.textContent = "Ver detalhes";
+    const detailList = document.createElement("dl");
+    [
+      ["ID", lead.id],
+      ["Cadastrado em", new Date(lead.cadastradoEm).toLocaleString("pt-BR")],
+      ["Cidade", lead.cidade],
+      ["Instagram", lead.instagram],
+      ["Possui loja", lead.possuiLoja],
+      ["Volume médio de compra", lead.volumeMedio],
+      ["Principal interesse", lead.principalInteresse],
+      ["Prazo de compra", lead.previsaoDeCompra],
+      ["Orientação", lead.orientacao],
+      ["Motivo", lead.motivo],
+      ["Mensagem sugerida para WhatsApp", lead.mensagemWhatsApp],
+    ].forEach(([label, value]) => appendDetail(detailList, label, value));
+    details.append(detailsButton, detailList);
+
+    const removeButton = document.createElement("button");
+    removeButton.type = "button";
+    removeButton.className = "crm-lead__delete";
+    removeButton.textContent = "Excluir lead";
+    removeButton.addEventListener("click", () => {
+      if (!confirm(`Excluir o lead ${lead.nome}?`)) return;
+      saveLeads(loadLeads().filter(({ id }) => id !== lead.id));
+      renderLeads();
+    });
+
+    article.append(summary, details, removeButton);
+    return article;
+  });
+
+  crmList.replaceChildren(...cards);
+}
 
 function legacyCopyText(text) {
   const textArea = document.createElement("textarea");
@@ -83,6 +187,21 @@ leadForm.addEventListener("submit", (event) => {
     lead,
     result.classification,
   );
+  const storedLeads = loadLeads();
+  const storedLead = {
+    id: createLeadId(storedLeads),
+    cadastradoEm: new Date().toISOString(),
+    ...lead,
+    score: result.score,
+    classificacao: result.classification,
+    prioridade: result.commercialAction.priority,
+    proximaAcao: result.commercialAction.nextAction,
+    orientacao: result.commercialAction.guidance,
+    motivo: result.commercialAction.reason,
+    mensagemWhatsApp: resultWhatsAppMessage.textContent,
+  };
+  saveLeads([...storedLeads, storedLead]);
+  renderLeads();
   copyFeedback.textContent = "";
   scoreBreakdown.replaceChildren(
     ...result.breakdown.map(({ label, points }) => {
@@ -100,3 +219,5 @@ leadForm.addEventListener("submit", (event) => {
   successMessage.hidden = false;
   scoreResult.hidden = false;
 });
+
+renderLeads();

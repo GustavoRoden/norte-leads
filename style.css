@@ -251,6 +251,10 @@ input::placeholder {
   color: #8d9a97;
 }
 
+#whatsapp {
+  max-width: 100%;
+}
+
 button {
   min-height: 50px;
   border: 0;
@@ -297,6 +301,17 @@ button:active {
   font-family: Georgia, "Times New Roman", serif;
   font-size: 25px;
   font-weight: 400;
+}
+
+.score-result__contact {
+  margin: 8px 0 0;
+  color: var(--ink-soft);
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.score-result__contact strong {
+  color: var(--ink);
 }
 
 .result-overview {
@@ -521,6 +536,10 @@ footer p {
 
   .form-grid {
     grid-template-columns: 1fr;
+  }
+
+  #whatsapp {
+    font-size: 16px;
   }
 
   .lead-card h2 {

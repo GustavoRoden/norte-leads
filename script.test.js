@@ -4,6 +4,17 @@ const vm = require("node:vm");
 const LeadScoring = require("./scoring.js");
 const WhatsAppMessaging = require("./messaging.js");
 
+const html = fs.readFileSync("./index.html", "utf8");
+const instagramPosition = html.indexOf('id="instagram"');
+const whatsappPosition = html.indexOf('id="whatsapp"');
+
+assert.ok(instagramPosition >= 0 && whatsappPosition > instagramPosition);
+assert.match(
+  html,
+  /<input id="whatsapp" name="whatsapp" type="tel" placeholder="\(48\) 99999-9999" autocomplete="tel" required \/>/,
+);
+assert.match(html, /WhatsApp: <strong id="result-whatsapp"><\/strong>/);
+
 function createElement() {
   return {
     textContent: "",
@@ -34,6 +45,7 @@ function loadApplication({ clipboard, execCommand = () => true } = {}) {
     "#form-success",
     "#score-result",
     "#result-name",
+    "#result-whatsapp",
     "#result-score",
     "#result-classification",
     "#score-breakdown",
@@ -68,7 +80,12 @@ function loadApplication({ clipboard, execCommand = () => true } = {}) {
     },
     LeadScoring,
     WhatsAppMessaging,
-    console: { log() {}, error: (...args) => context.consoleErrors.push(args) },
+    console: {
+      log(message, lead) {
+        if (message === "Lead capturado:") context.capturedLead = lead;
+      },
+      error: (...args) => context.consoleErrors.push(args),
+    },
     consoleErrors: [],
   };
 
@@ -81,6 +98,7 @@ const hotLead = {
   nomeDaLoja: "Casa Aurora",
   cidade: "Natal",
   instagram: "@casaaurora",
+  whatsapp: "(48) 99999-9999",
   possuiLoja: "Sim",
   volumeMedio: "50 peças ou mais",
   principalInteresse: "Quero comprar",
@@ -97,10 +115,13 @@ const hotLead = {
 
   form.listeners.submit({ preventDefault() {} });
 
+  assert.equal(context.capturedLead.whatsapp, hotLead.whatsapp);
   assert.equal(elements["#result-name"].textContent, hotLead.nome);
+  assert.equal(elements["#result-whatsapp"].textContent, hotLead.whatsapp);
   assert.equal(elements["#result-classification"].textContent, "Quente");
   assert.match(elements["#result-whatsapp-message"].textContent, /Marina/);
   assert.match(elements["#result-whatsapp-message"].textContent, /Casa Aurora/);
+  assert.doesNotMatch(elements["#result-whatsapp-message"].textContent, /99999-9999/);
   assert.equal(elements["#form-success"].hidden, false);
   assert.equal(elements["#score-result"].hidden, false);
   assert.equal(form.wasReset, true);

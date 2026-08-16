@@ -30,6 +30,8 @@ A aplicação foi criada para uma atividade acadêmica sobre automação e CRM. 
 - **Etapa 4 — Próxima Ação Comercial Automática:** concluída.
 - **Etapa 5 — Geração Automática de Mensagem para WhatsApp:** concluída.
 
+O formulário de captura também coleta o WhatsApp do potencial lojista como canal de contato comercial.
+
 Na Etapa 3, o sistema passou a utilizar as respostas comerciais do formulário para calcular automaticamente uma pontuação em uma escala de 0 a 100. Com base no resultado, cada lead é classificado como **Frio**, **Morno** ou **Quente**, e a composição dos pontos é apresentada após o cadastro.
 
 Na Etapa 4, o sistema passou a transformar automaticamente a classificação do lead em uma prioridade e em uma próxima ação comercial, além de apresentar a orientação de atendimento e o motivo da decisão:

@@ -59,6 +59,10 @@
                 <label for="instagram">Instagram da loja</label>
                 <input id="instagram" name="instagram" type="text" placeholder="@sualoja" autocapitalize="none" required />
               </div>
+              <div class="field">
+                <label for="whatsapp">WhatsApp</label>
+                <input id="whatsapp" name="whatsapp" type="tel" placeholder="(48) 99999-9999" autocomplete="tel" required />
+              </div>
             </div>
           </fieldset>
 
@@ -110,6 +114,9 @@
         <section id="score-result" class="score-result" aria-labelledby="result-title" aria-live="polite" hidden>
           <p class="step">Lead classificado</p>
           <h3 id="result-title">Resultado de <span id="result-name"></span></h3>
+          <p class="score-result__contact">
+            WhatsApp: <strong id="result-whatsapp"></strong>
+          </p>
           <div class="result-overview" aria-label="Resumo da qualificação do lead">
             <div class="result-overview__item result-overview__item--score">
               <span>Lead Score</span>

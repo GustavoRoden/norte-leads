@@ -34,7 +34,7 @@
 
       <section class="lead-card" aria-labelledby="form-title">
         <div class="lead-card__header">
-          <p class="step">Etapa 06</p>
+          <p class="step">Etapa 07</p>
           <h2 id="form-title">Cadastro de lojista</h2>
           <p>Preencha os dados abaixo para começarmos uma conversa.</p>
         </div>
@@ -168,6 +168,43 @@
         <p class="step">Base comercial</p>
         <h2 id="crm-title">Mini CRM</h2>
         <p>Leads cadastrados e disponíveis neste navegador.</p>
+      </div>
+      <div class="crm-dashboard" aria-label="Indicadores da base comercial">
+        <article class="crm-indicator">
+          <span>Total de Leads</span>
+          <strong id="total-leads">0</strong>
+        </article>
+        <article class="crm-indicator crm-indicator--hot">
+          <span>Leads Quentes</span>
+          <strong id="hot-leads">0</strong>
+        </article>
+        <article class="crm-indicator crm-indicator--warm">
+          <span>Leads Mornos</span>
+          <strong id="warm-leads">0</strong>
+        </article>
+        <article class="crm-indicator crm-indicator--cold">
+          <span>Leads Frios</span>
+          <strong id="cold-leads">0</strong>
+        </article>
+      </div>
+      <div class="crm-controls" aria-label="Filtros e ordenação dos leads">
+        <div class="field">
+          <label for="crm-filter">Filtrar por classificação</label>
+          <select id="crm-filter">
+            <option value="Todos">Todos</option>
+            <option value="Quente">Quentes</option>
+            <option value="Morno">Mornos</option>
+            <option value="Frio">Frios</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="crm-sort">Ordenar leads</label>
+          <select id="crm-sort">
+            <option value="score-desc">Maior Score primeiro</option>
+            <option value="score-asc">Menor Score primeiro</option>
+            <option value="recent">Mais recentes primeiro</option>
+          </select>
+        </div>
       </div>
       <p id="crm-empty" class="mini-crm__empty">Nenhum lead cadastrado ainda.</p>
       <div id="crm-list" class="crm-list" aria-live="polite"></div>

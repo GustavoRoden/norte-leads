@@ -299,23 +299,61 @@ button:active {
   font-weight: 400;
 }
 
-.score-result__summary {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
+.result-overview {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
   margin: 20px 0;
-  padding-bottom: 18px;
+  padding-bottom: 20px;
   border-bottom: 1px solid var(--border);
-  color: var(--ink-soft);
-  font-size: 13px;
 }
 
-.score-result__summary > strong {
+.result-overview__item {
+  min-width: 0;
+  padding: 15px 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(255, 253, 250, 0.76);
+}
+
+.result-overview__item span {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--ink-soft);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.result-overview__item strong {
+  display: block;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.result-overview__item--score strong {
   color: var(--terracotta);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 34px;
+  font-size: 31px;
   font-weight: 400;
+  line-height: 1;
+}
+
+.result-overview__item--classification {
+  border-color: var(--sage);
+  background: var(--sage-light);
+}
+
+.result-overview__item--classification strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.result-overview__item--action {
+  border-color: rgba(183, 104, 79, 0.36);
 }
 
 .score-breakdown {
@@ -346,6 +384,46 @@ button:active {
   font-size: 16px;
   font-weight: 700;
   text-align: center;
+}
+
+.commercial-action {
+  margin-top: 22px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(255, 253, 250, 0.72);
+}
+
+.commercial-action > .step {
+  margin: 0;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border);
+}
+
+.commercial-action__details {
+  display: grid;
+  gap: 15px;
+  margin: 17px 0 0;
+}
+
+.commercial-action__details div {
+  display: grid;
+  gap: 5px;
+}
+
+.commercial-action__details dt {
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.commercial-action__details dd {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.55;
 }
 
 footer {
@@ -412,9 +490,8 @@ footer p {
     padding: 22px 18px;
   }
 
-  .score-result__summary {
-    align-items: flex-start;
-    flex-direction: column;
+  .result-overview {
+    grid-template-columns: 1fr;
   }
 }
 

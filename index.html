@@ -34,7 +34,7 @@
 
       <section class="lead-card" aria-labelledby="form-title">
         <div class="lead-card__header">
-          <p class="step">Etapa 03</p>
+          <p class="step">Etapa 04</p>
           <h2 id="form-title">Cadastro de lojista</h2>
           <p>Preencha os dados abaixo para começarmos uma conversa.</p>
         </div>
@@ -110,12 +110,39 @@
         <section id="score-result" class="score-result" aria-labelledby="result-title" aria-live="polite" hidden>
           <p class="step">Lead classificado</p>
           <h3 id="result-title">Resultado de <span id="result-name"></span></h3>
-          <div class="score-result__summary">
-            <strong id="result-score"></strong>
-            <span>Classificação: <b id="result-classification"></b></span>
+          <div class="result-overview" aria-label="Resumo da qualificação do lead">
+            <div class="result-overview__item result-overview__item--score">
+              <span>Lead Score</span>
+              <strong id="result-score"></strong>
+            </div>
+            <div class="result-overview__item result-overview__item--classification">
+              <span>Classificação</span>
+              <strong id="result-classification"></strong>
+            </div>
+            <div class="result-overview__item">
+              <span>Prioridade comercial</span>
+              <strong id="result-priority"></strong>
+            </div>
+            <div class="result-overview__item result-overview__item--action">
+              <span>Próxima ação</span>
+              <strong id="result-next-action"></strong>
+            </div>
           </div>
           <ul id="score-breakdown" class="score-breakdown" aria-label="Detalhamento da pontuação"></ul>
           <p id="result-final" class="score-result__final"></p>
+          <div class="commercial-action" aria-label="Próxima ação comercial">
+            <p class="step">Direcionamento comercial</p>
+            <dl class="commercial-action__details">
+              <div>
+                <dt>Orientação</dt>
+                <dd id="result-guidance"></dd>
+              </div>
+              <div>
+                <dt>Motivo da decisão</dt>
+                <dd id="result-reason"></dd>
+              </div>
+            </dl>
+          </div>
         </section>
       </section>
     </main>

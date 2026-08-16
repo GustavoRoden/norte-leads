@@ -27,10 +27,17 @@ A aplicação foi criada para uma atividade acadêmica sobre automação e CRM. 
 - **Etapa 1 — Estrutura inicial:** página de apresentação e arquivos-base da aplicação.
 - **Etapa 2 — Captura do lead:** formulário responsivo para coleta dos dados básicos e comerciais de potenciais lojistas.
 - **Etapa 3 — Lead Scoring e Classificação Automática:** concluída.
+- **Etapa 4 — Próxima Ação Comercial Automática:** concluída.
 
 Na Etapa 3, o sistema passou a utilizar as respostas comerciais do formulário para calcular automaticamente uma pontuação em uma escala de 0 a 100. Com base no resultado, cada lead é classificado como **Frio**, **Morno** ou **Quente**, e a composição dos pontos é apresentada após o cadastro.
 
-A definição da próxima ação comercial, a integração com WhatsApp e o CRM ainda serão implementados em etapas posteriores. A persistência de dados e outras automações comerciais também permanecem reservadas para a evolução do projeto.
+Na Etapa 4, o sistema passou a transformar automaticamente a classificação do lead em uma prioridade e em uma próxima ação comercial, além de apresentar a orientação de atendimento e o motivo da decisão:
+
+- **Quente:** contato comercial prioritário.
+- **Morno:** catálogo + follow-up.
+- **Frio:** nutrição e relacionamento.
+
+A geração de mensagens para WhatsApp, o CRM e a persistência dos leads ainda serão implementados em etapas posteriores.
 
 ## Como visualizar
 

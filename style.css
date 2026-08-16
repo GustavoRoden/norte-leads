@@ -214,6 +214,7 @@ legend {
 }
 
 .field {
+  min-width: 0;
   display: grid;
   gap: 7px;
 }
@@ -226,6 +227,7 @@ label {
 
 input,
 select {
+  min-width: 0;
   width: 100%;
   min-height: 46px;
   padding: 0 13px;
@@ -340,5 +342,15 @@ footer p {
 
   .lead-card h2 {
     font-size: 30px;
+  }
+}
+
+@media (max-width: 360px) {
+  h1 {
+    font-size: 52px;
+  }
+
+  .lead-card {
+    padding-inline: 18px;
   }
 }

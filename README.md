@@ -1,83 +1,74 @@
 # Norte Leads — Mini CRM Inteligente
 
-O **Norte Leads** é a estrutura inicial de uma aplicação web para captura, qualificação e gerenciamento de leads B2B da **Norte Atelier**, uma confecção fictícia de moda feminina que vende no atacado para lojistas.
+## Sobre o projeto
 
-## Objetivo
+O **Norte Leads** é um projeto acadêmico de automação e CRM criado para demonstrar, de forma prática, o fluxo:
 
-O projeto tem como objetivo evoluir para um mini CRM que apoie a captura, a qualificação e o gerenciamento de potenciais lojistas da Norte Atelier.
+**Lead chegou → lógica acontece → ação é tomada.**
 
-## Conceito do projeto
+A aplicação captura dados comerciais, qualifica automaticamente cada oportunidade e apresenta um direcionamento para o atendimento.
 
-O fluxo que orientará as próximas etapas é **“Lead → Lógica → Ação”**: um lead chega ao sistema, uma lógica de qualificação é aplicada e uma próxima ação comercial é definida.
+## Contexto
 
-## Contexto acadêmico
+A **Norte Atelier** é uma empresa fictícia de moda feminina B2B voltada para lojistas. O Norte Leads representa uma ferramenta de apoio à organização e à priorização de potenciais clientes da marca.
 
-A aplicação foi criada para uma atividade acadêmica sobre automação e CRM. Ela servirá como base para demonstrar, em etapas futuras, como dados de potenciais clientes podem apoiar a qualificação de leads e a definição de ações comerciais.
+## Fluxo da automação
 
-## Tecnologias utilizadas
+1. **Captura do lead:** coleta dados de contato, perfil comercial, interesse e prazo de compra.
+2. **Lead Scoring:** calcula uma pontuação de 0 a 100 a partir das respostas comerciais.
+3. **Classificação:** identifica o lead como Frio, Morno ou Quente.
+4. **Definição de prioridade:** atribui prioridade baixa, média ou alta.
+5. **Próxima ação:** indica o direcionamento comercial mais adequado.
+6. **Geração de mensagem:** cria uma abordagem personalizada para WhatsApp.
+7. **Armazenamento no CRM:** salva o lead e seu resultado no navegador.
+8. **Priorização comercial:** organiza a base para facilitar o atendimento das melhores oportunidades.
 
-- HTML5
-- CSS3
-- JavaScript puro
+## Funcionalidades
 
-## Status do projeto
-
-### Etapas concluídas
-
-- **Etapa 1 — Estrutura inicial:** página de apresentação e arquivos-base da aplicação.
-- **Etapa 2 — Captura do lead:** formulário responsivo para coleta dos dados básicos e comerciais de potenciais lojistas.
-- **Etapa 3 — Lead Scoring e Classificação Automática:** concluída.
-- **Etapa 4 — Próxima Ação Comercial Automática:** concluída.
-- **Etapa 5 — Geração Automática de Mensagem para WhatsApp:** concluída.
-- **Etapa 6 — Mini CRM e Persistência dos Leads:** concluída.
-- **Etapa 7 — Dashboard, Filtros e Priorização Comercial:** concluída.
-
-O formulário de captura também coleta o WhatsApp do potencial lojista como canal de contato comercial.
-
-Na Etapa 3, o sistema passou a utilizar as respostas comerciais do formulário para calcular automaticamente uma pontuação em uma escala de 0 a 100. Com base no resultado, cada lead é classificado como **Frio**, **Morno** ou **Quente**, e a composição dos pontos é apresentada após o cadastro.
-
-Na Etapa 4, o sistema passou a transformar automaticamente a classificação do lead em uma prioridade e em uma próxima ação comercial, além de apresentar a orientação de atendimento e o motivo da decisão:
-
-- **Quente:** contato comercial prioritário.
-- **Morno:** catálogo + follow-up.
-- **Frio:** nutrição e relacionamento.
-
-Na Etapa 5, o sistema passou a gerar automaticamente uma abordagem comercial personalizada após a classificação do lead. A mensagem utiliza:
-
-- nome do lead;
-- nome da loja;
-- classificação;
-- principal interesse.
-
-A abordagem gerada pode ser copiada para utilização pelo responsável comercial. O sistema não realiza o envio automático da mensagem e não possui integração com a API do WhatsApp.
-
-### Etapa 6 — Mini CRM e Persistência dos Leads
-
-Na Etapa 6, todo lead processado passou a ser armazenado automaticamente em uma coleção no `localStorage`, com ID e data de cadastro. A coleção permite manter vários leads na base sem substituir os registros anteriores, e os dados continuam disponíveis após o recarregamento da página.
-
-A interface agora conta com uma área **Mini CRM**, na qual é possível:
-
-- visualizar o resumo dos leads cadastrados;
-- consultar todos os dados de um lead em **Ver detalhes**;
-- excluir individualmente um lead após confirmação.
-
-O `localStorage` foi escolhido por se tratar de uma demonstração acadêmica executada diretamente no navegador. Essa solução facilita a apresentação do conceito de persistência sem infraestrutura externa, mas não substitui um banco de dados em uma aplicação de produção.
-
-### Etapa 7 — Dashboard, Filtros e Priorização Comercial
-
-O Mini CRM agora conta com um dashboard comercial que apresenta:
-
-- contador total de leads;
-- quantidade de **Leads Quentes**;
-- quantidade de **Leads Mornos**;
-- quantidade de **Leads Frios**;
+- formulário responsivo para captura de leads;
+- validação dos campos obrigatórios;
+- cálculo automático da pontuação e exibição de sua composição;
+- classificação em Frio, Morno ou Quente;
+- definição automática de prioridade, próxima ação, orientação e motivo;
+- geração de mensagem comercial personalizada;
+- opções para copiar a mensagem ou abrir a conversa no WhatsApp, sem envio automático;
+- armazenamento de vários leads no `localStorage`;
+- Mini CRM com resumo, detalhes e exclusão individual de leads;
+- dashboard com total de leads e indicadores por classificação;
 - filtros por classificação;
-- ordenação por Score, do maior para o menor ou do menor para o maior;
-- ordenação por data de cadastro, com os leads mais recentes primeiro;
-- priorização automática dos maiores Scores como visualização padrão.
+- ordenação por pontuação ou data de cadastro;
+- interface responsiva para computadores, tablets e smartphones.
 
-Os indicadores são calculados dinamicamente a partir dos leads armazenados no `localStorage`. Os filtros e as opções de ordenação modificam somente a visualização da lista e não alteram nem removem os registros persistidos.
+## Lead Scoring
 
-## Como visualizar
+A pontuação considera quatro critérios: existência de loja, volume médio de compra, principal interesse e prazo previsto para compra. A soma pode variar de 0 a 100 e determina a classificação:
 
-Abra o arquivo `index.html` em um navegador. Não é necessário instalar dependências ou executar um processo de build.
+- **0–39:** Frio;
+- **40–69:** Morno;
+- **70–100:** Quente.
+
+## Tecnologias
+
+- HTML
+- CSS
+- JavaScript
+- localStorage
+
+## Persistência
+
+Os leads são armazenados no `localStorage` do navegador porque o projeto é uma demonstração acadêmica sem infraestrutura de servidor. Os dados permanecem disponíveis após o recarregamento da página no mesmo navegador.
+
+Em uma aplicação real, a persistência seria feita por um backend integrado a um banco de dados, com os controles adequados de acesso, segurança e disponibilidade.
+
+## Execução
+
+Não é necessário instalar dependências nem executar um processo de build:
+
+1. baixe ou clone este repositório;
+2. abra o arquivo `index.html` em um navegador;
+3. preencha o formulário e cadastre um lead;
+4. consulte o resultado e acompanhe os registros no Mini CRM.
+
+## Status
+
+**Projeto concluído.**

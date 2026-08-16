@@ -13,6 +13,7 @@ const resultGuidance = document.querySelector("#result-guidance");
 const resultReason = document.querySelector("#result-reason");
 const resultWhatsAppMessage = document.querySelector("#result-whatsapp-message");
 const copyMessageButton = document.querySelector("#copy-message");
+const openWhatsAppLink = document.querySelector("#open-whatsapp");
 const copyFeedback = document.querySelector("#copy-feedback");
 const crmList = document.querySelector("#crm-list");
 const crmEmpty = document.querySelector("#crm-empty");
@@ -86,12 +87,13 @@ function renderLeads() {
 
   crmEmpty.hidden = visibleLeads.length > 0;
   crmEmpty.textContent = leads.length === 0
-    ? "Nenhum lead cadastrado ainda."
-    : "Nenhum lead encontrado para o filtro selecionado.";
+    ? "Nenhum lead cadastrado."
+    : "Nenhum lead encontrado com esse filtro.";
 
   const cards = visibleLeads.map((lead) => {
     const article = document.createElement("article");
     article.className = "crm-lead";
+    article.setAttribute("aria-label", `Lead ${lead.nome}`);
 
     const summary = document.createElement("div");
     summary.className = "crm-lead__summary";
@@ -99,7 +101,7 @@ function renderLeads() {
       ["Nome", lead.nome],
       ["Loja", lead.nomeDaLoja],
       ["WhatsApp", lead.whatsapp],
-      ["Score", `${lead.score}/100`],
+      ["Pontuação", `${lead.score}/100`],
       ["Classificação", lead.classificacao],
       ["Prioridade", lead.prioridade],
       ["Próxima ação", lead.proximaAcao],
@@ -119,24 +121,36 @@ function renderLeads() {
     detailsButton.textContent = "Ver detalhes";
     const detailList = document.createElement("dl");
     [
-      ["ID", lead.id],
-      ["Cadastrado em", new Date(lead.cadastradoEm).toLocaleString("pt-BR")],
+      ["Identificador", lead.id],
+      ["Data de cadastro", new Date(lead.cadastradoEm).toLocaleString("pt-BR")],
       ["Cidade", lead.cidade],
       ["Instagram", lead.instagram],
       ["Possui loja", lead.possuiLoja],
       ["Volume médio de compra", lead.volumeMedio],
       ["Principal interesse", lead.principalInteresse],
       ["Prazo de compra", lead.previsaoDeCompra],
-      ["Orientação", lead.orientacao],
-      ["Motivo", lead.motivo],
-      ["Mensagem sugerida para WhatsApp", lead.mensagemWhatsApp],
+      ["Orientação comercial", lead.orientacao],
+      ["Motivo da classificação", lead.motivo],
+      ["Mensagem sugerida", lead.mensagemWhatsApp],
     ].forEach(([label, value]) => appendDetail(detailList, label, value));
-    details.append(detailsButton, detailList);
+
+    const whatsAppLink = document.createElement("a");
+    whatsAppLink.className = "crm-lead__whatsapp";
+    whatsAppLink.textContent = "Abrir no WhatsApp";
+    whatsAppLink.href = WhatsAppMessaging.generateWhatsAppLink(
+      lead.whatsapp,
+      lead.mensagemWhatsApp,
+    );
+    whatsAppLink.target = "_blank";
+    whatsAppLink.rel = "noopener noreferrer";
+    whatsAppLink.setAttribute("aria-label", `Abrir conversa com ${lead.nome} no WhatsApp`);
+    details.append(detailsButton, detailList, whatsAppLink);
 
     const removeButton = document.createElement("button");
     removeButton.type = "button";
     removeButton.className = "crm-lead__delete";
     removeButton.textContent = "Excluir lead";
+    removeButton.setAttribute("aria-label", `Excluir lead ${lead.nome}`);
     removeButton.addEventListener("click", () => {
       if (!confirm(`Excluir o lead ${lead.nome}?`)) return;
       saveLeads(loadLeads().filter(({ id }) => id !== lead.id));
@@ -208,7 +222,6 @@ leadForm.addEventListener("submit", (event) => {
   const result = LeadScoring.calculateLeadScore(lead);
 
   leadForm.reset();
-  console.log("Lead capturado:", lead);
   resultName.textContent = lead.nome;
   resultWhatsApp.textContent = lead.whatsapp;
   resultScore.textContent = `${result.score}/100`;
@@ -220,6 +233,10 @@ leadForm.addEventListener("submit", (event) => {
   resultWhatsAppMessage.textContent = WhatsAppMessaging.generateWhatsAppMessage(
     lead,
     result.classification,
+  );
+  openWhatsAppLink.href = WhatsAppMessaging.generateWhatsAppLink(
+    lead.whatsapp,
+    resultWhatsAppMessage.textContent,
   );
   const storedLeads = loadLeads();
   const storedLead = {
@@ -249,7 +266,7 @@ leadForm.addEventListener("submit", (event) => {
       return item;
     }),
   );
-  resultFinal.textContent = `${result.score}/100 — Lead ${result.classification}`;
+  resultFinal.textContent = `${result.score}/100 — Classificação: ${result.classification}`;
   successMessage.hidden = false;
   scoreResult.hidden = false;
 });

@@ -34,7 +34,7 @@
 
       <section class="lead-card" aria-labelledby="form-title">
         <div class="lead-card__header">
-          <p class="step">Etapa 07</p>
+          <p class="step">Etapa 8</p>
           <h2 id="form-title">Cadastro de lojista</h2>
           <p>Preencha os dados abaixo para começarmos uma conversa.</p>
         </div>
@@ -69,7 +69,7 @@
           <fieldset>
             <legend>Dados comerciais</legend>
             <div class="field">
-              <label for="has-store">Possui loja atualmente?</label>
+              <label for="has-store">Você possui uma loja atualmente?</label>
               <select id="has-store" name="possuiLoja" required>
                 <option value="" selected disabled>Selecione uma opção</option>
                 <option value="Sim">Sim</option>
@@ -105,7 +105,7 @@
             </div>
           </fieldset>
 
-          <button type="submit">Cadastrar Lead</button>
+          <button type="submit">Cadastrar lead</button>
           <p id="form-success" class="form-success" role="status" aria-live="polite" hidden>
             Lead cadastrado com sucesso.
           </p>
@@ -119,7 +119,7 @@
           </p>
           <div class="result-overview" aria-label="Resumo da qualificação do lead">
             <div class="result-overview__item result-overview__item--score">
-              <span>Lead Score</span>
+              <span>Pontuação do lead</span>
               <strong id="result-score"></strong>
             </div>
             <div class="result-overview__item result-overview__item--classification">
@@ -141,11 +141,11 @@
             <p class="step">Direcionamento comercial</p>
             <dl class="commercial-action__details">
               <div>
-                <dt>Orientação</dt>
+                <dt>Orientação comercial</dt>
                 <dd id="result-guidance"></dd>
               </div>
               <div>
-                <dt>Motivo da decisão</dt>
+                <dt>Motivo da classificação</dt>
                 <dd id="result-reason"></dd>
               </div>
             </dl>
@@ -154,9 +154,14 @@
             <p class="step">Abordagem sugerida</p>
             <h4 id="whatsapp-message-title">Mensagem para WhatsApp</h4>
             <p id="result-whatsapp-message" class="whatsapp-message__text"></p>
-            <button id="copy-message" class="whatsapp-message__copy" type="button">
-              Copiar mensagem
-            </button>
+            <div class="whatsapp-message__actions">
+              <button id="copy-message" class="whatsapp-message__copy" type="button">
+                Copiar mensagem
+              </button>
+              <a id="open-whatsapp" class="whatsapp-message__open" target="_blank" rel="noopener noreferrer" aria-describedby="result-whatsapp-message">
+                Abrir no WhatsApp
+              </a>
+            </div>
             <p id="copy-feedback" class="copy-feedback" role="status" aria-live="polite"></p>
           </div>
         </section>
@@ -167,23 +172,23 @@
       <div class="mini-crm__header">
         <p class="step">Base comercial</p>
         <h2 id="crm-title">Mini CRM</h2>
-        <p>Leads cadastrados e disponíveis neste navegador.</p>
+        <p>Leads cadastrados para acompanhamento comercial.</p>
       </div>
       <div class="crm-dashboard" aria-label="Indicadores da base comercial">
         <article class="crm-indicator">
-          <span>Total de Leads</span>
+          <span>Total de leads</span>
           <strong id="total-leads">0</strong>
         </article>
         <article class="crm-indicator crm-indicator--hot">
-          <span>Leads Quentes</span>
+          <span>Leads quentes</span>
           <strong id="hot-leads">0</strong>
         </article>
         <article class="crm-indicator crm-indicator--warm">
-          <span>Leads Mornos</span>
+          <span>Leads mornos</span>
           <strong id="warm-leads">0</strong>
         </article>
         <article class="crm-indicator crm-indicator--cold">
-          <span>Leads Frios</span>
+          <span>Leads frios</span>
           <strong id="cold-leads">0</strong>
         </article>
       </div>
@@ -200,13 +205,13 @@
         <div class="field">
           <label for="crm-sort">Ordenar leads</label>
           <select id="crm-sort">
-            <option value="score-desc">Maior Score primeiro</option>
-            <option value="score-asc">Menor Score primeiro</option>
+            <option value="score-desc">Maior pontuação primeiro</option>
+            <option value="score-asc">Menor pontuação primeiro</option>
             <option value="recent">Mais recentes primeiro</option>
           </select>
         </div>
       </div>
-      <p id="crm-empty" class="mini-crm__empty">Nenhum lead cadastrado ainda.</p>
+      <p id="crm-empty" class="mini-crm__empty">Nenhum lead cadastrado.</p>
       <div id="crm-list" class="crm-list" aria-live="polite"></div>
     </section>
 

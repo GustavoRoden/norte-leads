@@ -15,12 +15,20 @@ assert.match(
   /<input id="whatsapp" name="whatsapp" type="tel" placeholder="\(48\) 99999-9999" autocomplete="tel" required \/>/,
 );
 assert.match(html, /WhatsApp: <strong id="result-whatsapp"><\/strong>/);
+assert.match(html, /id="open-whatsapp"[^>]*>\s*Abrir no WhatsApp/);
+assert.doesNotMatch(html, /id="open-whatsapp"[^>]*href="#"/);
+assert.match(html, /id="open-whatsapp"[^>]*aria-describedby="result-whatsapp-message"/);
+assert.match(html, /<span>Pontuação do lead<\/span>/);
+assert.doesNotMatch(html, /Lead Score|Total de Leads|Leads Quentes|Leads Mornos|Leads Frios/);
 assert.match(html, /<h2 id="crm-title">Mini CRM<\/h2>/);
 assert.match(html, /<strong id="total-leads">0<\/strong>/);
-assert.match(html, /<option value="score-desc">Maior Score primeiro<\/option>/);
+assert.match(html, /<option value="score-desc">Maior pontuação primeiro<\/option>/);
 assert.match(css, /\.crm-dashboard\s*\{[^}]*grid-template-columns:\s*repeat\(4, minmax\(0, 1fr\)\)/s);
 assert.match(css, /@media \(max-width: 620px\)[\s\S]*?\.crm-dashboard\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\)/);
 assert.match(css, /\.mini-crm\s*\{[^}]*overflow-x:\s*clip/s);
+assert.match(css, /@media \(pointer: coarse\)[\s\S]*?min-height:\s*48px/);
+assert.match(css, /@media \(max-width: 520px\)[\s\S]*?\.whatsapp-message__actions\s*\{[^}]*grid-template-columns:\s*1fr/s);
+assert.match(css, /@media \(max-width: 520px\)[\s\S]*?\.crm-lead__delete,\s*\.crm-lead__whatsapp\s*\{[^}]*width:\s*100%/s);
 
 function createElement() {
   return {
@@ -41,7 +49,9 @@ function createElement() {
     replaceChildren(...children) {
       this.children = children;
     },
-    setAttribute() {},
+    setAttribute(name, value) {
+      this[name] = value;
+    },
     select() {},
     remove() {
       this.removed = true;
@@ -77,6 +87,7 @@ function loadApplication({ clipboard, execCommand = () => true, localStorage = c
     "#result-reason",
     "#result-whatsapp-message",
     "#copy-message",
+    "#open-whatsapp",
     "#copy-feedback",
     "#crm-list",
     "#crm-empty",
@@ -114,12 +125,7 @@ function loadApplication({ clipboard, execCommand = () => true, localStorage = c
     localStorage,
     confirm,
     crypto: { randomUUID: () => `lead-${idCounter++}` },
-    console: {
-      log(message, lead) {
-        if (message === "Lead capturado:") context.capturedLead = lead;
-      },
-      error: (...args) => context.consoleErrors.push(args),
-    },
+    console: { error: (...args) => context.consoleErrors.push(args) },
     consoleErrors: [],
   };
 
@@ -149,12 +155,19 @@ const hotLead = {
 
   form.listeners.submit({ preventDefault() {} });
 
-  assert.equal(context.capturedLead.whatsapp, hotLead.whatsapp);
   assert.equal(elements["#result-name"].textContent, hotLead.nome);
   assert.equal(elements["#result-whatsapp"].textContent, hotLead.whatsapp);
   assert.equal(elements["#result-classification"].textContent, "Quente");
+  assert.equal(elements["#result-final"].textContent, "100/100 — Classificação: Quente");
   assert.match(elements["#result-whatsapp-message"].textContent, /Marina/);
   assert.match(elements["#result-whatsapp-message"].textContent, /Casa Aurora/);
+  assert.equal(
+    elements["#open-whatsapp"].href,
+    WhatsAppMessaging.generateWhatsAppLink(
+      hotLead.whatsapp,
+      elements["#result-whatsapp-message"].textContent,
+    ),
+  );
   assert.doesNotMatch(elements["#result-whatsapp-message"].textContent, /99999-9999/);
   assert.equal(elements["#form-success"].hidden, false);
   assert.equal(elements["#score-result"].hidden, false);
@@ -187,7 +200,12 @@ const hotLead = {
   form.reset = () => {};
   form.formData = new Map(Object.entries(hotLead));
   form.listeners.submit({ preventDefault() {} });
-  form.formData = new Map(Object.entries({ ...hotLead, nome: "Joana", nomeDaLoja: "Sol" }));
+  form.formData = new Map(Object.entries({
+    ...hotLead,
+    nome: "Joana",
+    nomeDaLoja: "Sol",
+    whatsapp: "(11) 98888-7777",
+  }));
   form.listeners.submit({ preventDefault() {} });
   const multipleLeads = JSON.parse(localStorage.getItem("norteLeads"));
   assert.equal(multipleLeads.length, 2);
@@ -201,6 +219,22 @@ const hotLead = {
   const details = firstCard.children[1];
   assert.equal(details.children[0].textContent, "Ver detalhes");
   assert.equal(details.children[1].children.length, 11);
+  assert.equal(details.children[2].textContent, "Abrir no WhatsApp");
+  assert.equal(
+    details.children[2].href,
+    WhatsAppMessaging.generateWhatsAppLink(multipleLeads[0].whatsapp, multipleLeads[0].mensagemWhatsApp),
+  );
+  const secondWhatsAppLink = reload.elements["#crm-list"].children[1].children[1].children[2];
+  assert.equal(
+    secondWhatsAppLink.href,
+    WhatsAppMessaging.generateWhatsAppLink(multipleLeads[1].whatsapp, multipleLeads[1].mensagemWhatsApp),
+  );
+  assert.notEqual(details.children[2].href, secondWhatsAppLink.href);
+  assert.equal(details.children[2].target, "_blank");
+  assert.equal(details.children[2].rel, "noopener noreferrer");
+  assert.equal(details.children[2]["aria-label"], "Abrir conversa com Marina no WhatsApp");
+  assert.equal(firstCard["aria-label"], "Lead Marina");
+  assert.equal(firstCard.children[2]["aria-label"], "Excluir lead Marina");
   firstCard.children[2].listeners.click();
   assert.equal(JSON.parse(localStorage.getItem("norteLeads")).length, 1);
   assert.equal(reload.elements["#crm-list"].children.length, 1);

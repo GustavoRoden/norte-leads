@@ -57,7 +57,27 @@
     return `${approach.opening(name)}\n\n${interestMessage(store)}\n\n${approach.closing}`;
   }
 
-  const whatsAppMessaging = { generateWhatsAppMessage, approaches, interestMessages };
+  function normalizeWhatsAppNumber(phone) {
+    const rawPhone = String(phone ?? "").trim();
+    const digits = rawPhone.replace(/\D/g, "");
+    const hasExplicitCountryCode = rawPhone.startsWith("+");
+    return !hasExplicitCountryCode && (digits.length === 10 || digits.length === 11)
+      ? `55${digits}`
+      : digits;
+  }
+
+  function generateWhatsAppLink(phone, message) {
+    const normalizedPhone = normalizeWhatsAppNumber(phone);
+    return `https://wa.me/${normalizedPhone}?text=${encodeURIComponent(String(message ?? ""))}`;
+  }
+
+  const whatsAppMessaging = {
+    generateWhatsAppMessage,
+    normalizeWhatsAppNumber,
+    generateWhatsAppLink,
+    approaches,
+    interestMessages,
+  };
   globalScope.WhatsAppMessaging = whatsAppMessaging;
 
   if (typeof module !== "undefined" && module.exports) {

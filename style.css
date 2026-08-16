@@ -426,6 +426,47 @@ button:active {
   line-height: 1.55;
 }
 
+.whatsapp-message {
+  margin-top: 18px;
+  padding: 20px;
+  border: 1px solid rgba(25, 58, 53, 0.24);
+  border-radius: 14px;
+  background: var(--white);
+}
+
+.whatsapp-message h4 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 21px;
+  font-weight: 400;
+}
+
+.whatsapp-message__text {
+  margin: 16px 0;
+  padding: 16px;
+  border-left: 3px solid var(--sage);
+  border-radius: 0 9px 9px 0;
+  color: var(--ink-soft);
+  background: var(--cream);
+  font-size: 14px;
+  line-height: 1.65;
+  white-space: pre-line;
+}
+
+.whatsapp-message__copy {
+  width: 100%;
+  min-height: 44px;
+}
+
+.copy-feedback {
+  min-height: 20px;
+  margin: 10px 0 0;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
 footer {
   width: min(1120px, calc(100% - 48px));
   margin: 0 auto;
